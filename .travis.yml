@@ -9,6 +9,8 @@ before_install:
 script:
   - docker run -e CI=true jaimeadm/react-test npm test -- --coverage
 
+# Criar containers
+
 after_success:
   - docker build -t jaimeadm/multi-client ./client
   - docker build -t jaimeadm/multi-nginx ./nginx
