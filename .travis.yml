@@ -9,7 +9,7 @@ before_install:
 script:
   - docker run -e CI=true jaimeadm/react-test npm test -- --coverage
 
-# Criar containers
+# Criar containers DockerHub
 
 after_success:
   - docker build -t jaimeadm/multi-client ./client
@@ -23,3 +23,17 @@ after_success:
   - docker push jaimeadm/multi-nginx
   - docker push jaimeadm/multi-server
   - docker push jaimeadm/multi-worker
+
+# Criar CI TravisCI
+
+deploy:
+  provider: elasticbeanstalk
+  region: "us-east-1"
+  app: "multi-docker"
+  env: "Multidocker-env"
+  bucket_name: "elasticbeanstalk-us-east-1-345629399239"
+  bucket_path: "multi-docker"
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
